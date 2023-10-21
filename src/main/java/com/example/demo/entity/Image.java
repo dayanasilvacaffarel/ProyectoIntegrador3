@@ -1,14 +1,15 @@
 package com.example.demo.entity;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
 @Entity
-@Table(name = "products")
+@Table(name = "images")
 @Getter
 @Setter
-public class Product {
+public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,21 +18,8 @@ public class Product {
     private String name;
 
     @Column
-    private String description;
+    private String url;
 
-    @Column
-    private Boolean active;
-
-    @Column
-    private Double price;
-
-    @Column
-    private String brand;
-
-    @Column
-    private String model;
-
-    @Column(name="categories_id")
-    private int categoryId;
-
+    @Column(name = "product_id")
+    private int productId;
 }
