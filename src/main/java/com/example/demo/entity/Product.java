@@ -30,7 +30,8 @@ public class Product {
     @Column
     private String model;
 
+
     @Column(name="categories_id")
-    private int categoryId;
+    private Category category;
 
 }
