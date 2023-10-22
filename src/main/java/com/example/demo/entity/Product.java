@@ -1,5 +1,7 @@
 package com.example.demo.entity;
+
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,8 +32,8 @@ public class Product {
     @Column
     private String model;
 
-
-    @Column(name="categories_id")
+    @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
 }

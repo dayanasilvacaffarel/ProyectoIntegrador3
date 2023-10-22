@@ -22,8 +22,9 @@ public class Reservation {
     @Column(name="end_date")
     private LocalDateTime endDate;
 
-    @Column(name="product_id")
-    private int productId;
+    @ManyToOne
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    private Product product;
 
     @Column
     private String status;
@@ -34,6 +35,7 @@ public class Reservation {
     @Column(name = "final_price")
     private Double finalPrice;
 
-    @Column(name = "user_id")
-    private int userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 }
