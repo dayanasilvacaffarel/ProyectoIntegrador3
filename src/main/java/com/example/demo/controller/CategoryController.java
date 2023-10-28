@@ -31,7 +31,6 @@ public class CategoryController {
             return ResponseEntity.notFound().build();
         }
     }
-
     @GetMapping("/name/{name}")
     public ResponseEntity<Category> getCategoryByName(@PathVariable String name){
         Optional<Category> categoriaBuscada = categoryService.getCategoryByName(name);
@@ -41,23 +40,22 @@ public class CategoryController {
             return ResponseEntity.notFound().build();
         }
     }
-
     @GetMapping
     public ResponseEntity<List<Category>> getCategories(){
         return ResponseEntity.ok(categoryService.getAllCategories());
     }
 
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<String> updateCategory(@RequestBody Category category) throws ResourceNotFoundException{
-//        Optional<Category> categoriaBuscada = categoryService.getAllCategories(category.getId());
-//        if (categoriaBuscada.isPresent()){
-//            categoryService.updateCategory(category);
-//            return ResponseEntity.ok("Category was Updated -"+category.getName());
-//        }else {
-//            throw  new ResourceNotFoundException("Category was not found");
-//        }
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateCategory(@RequestBody Category category) throws ResourceNotFoundException{
+        Optional<Category> categoriaBuscada = categoryService.getCategoryById(category.getId());
+        if (categoriaBuscada.isPresent()){
+            categoryService.updateCategory(category);
+            return ResponseEntity.ok("Category was Updated -"+category.getName());
+        }else {
+            throw  new ResourceNotFoundException("Category was not found");
+        }
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCategory(@PathVariable Long id) {
