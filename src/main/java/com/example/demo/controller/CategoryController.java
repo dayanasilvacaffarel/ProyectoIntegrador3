@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/categories")
@@ -20,14 +21,26 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.addCategory(category));
     }
 
+    @GetMapping("/name/{name}")
+    public ResponseEntity<Category> getCategoryByName(@PathVariable String name){
+        Optional<Category> categoriaBuscada = categoryService.getCategoryByName(name);
+        if (categoriaBuscada.isPresent()){
+            return ResponseEntity.ok(categoriaBuscada.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @GetMapping
     public ResponseEntity<List<Category>> getCategories(){
-        return ResponseEntity.ok(categoryService.getCategories());
+        return ResponseEntity.ok(categoryService.getAllCategories());
     }
+
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);
-        return ResponseEntity.ok("Category was deleted");
+        return ResponseEntity.ok("The category with the ID was deleted:" +id);
     }
 }
