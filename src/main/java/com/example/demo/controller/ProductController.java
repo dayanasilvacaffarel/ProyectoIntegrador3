@@ -29,9 +29,11 @@ public class ProductController {
             return ResponseEntity.badRequest().build();
         }
     }
-//    @GetMapping
-//    public ResponseEntity<List<Product>> getProducts(){
-//        return ResponseEntity.ok(productService.getProducts());
-//    }
+
+
+    @GetMapping
+    public ResponseEntity<List<ProductDTO>> getProducts(){
+        return ResponseEntity.ok(productService.getProducts());
+    }
 }
 

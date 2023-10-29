@@ -7,6 +7,7 @@ import com.example.demo.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -52,9 +53,14 @@ public class ProductService {
         return productToproductDTO(productSaved);
     }
 
-//    public List<Product> getProducts(){
-//        return productRepository.findAll();
-//    }
+    public List<ProductDTO> getProducts(){
+        List<Product> productFound = productRepository.findAll();
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        for (Product product: productFound){
+            productDTOList.add(productToproductDTO(product));
+        }
+        return productDTOList;
+    }
 //     public void deleteProduct(Long id){
 //        productRepository.deleteById(id);
 //     }
