@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Category;
+import com.example.demo.repository.CategoryRepository;
 import com.example.demo.service.CategoryService;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @PostMapping
     public ResponseEntity<Category> addCategory(@RequestBody Category category){

@@ -38,7 +38,7 @@ public class Product {
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
-    //private List<Image> images;
-
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL, orphanRemoval = true )
+    private List<Image> images;
 
 }
