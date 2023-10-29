@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.ProductDTO;
 import com.example.demo.entity.Category;
 import com.example.demo.entity.Product;
 import com.example.demo.repository.CategoryRepository;
@@ -21,12 +22,16 @@ public class ProductController {
     private CategoryService categoryService;
 
     @PostMapping
-    public ResponseEntity<Product> addProduct(@RequestBody Product product){
-        return ResponseEntity.ok(productService.addProduct(product));
+    public ResponseEntity<ProductDTO> addProduct(@RequestBody Product product){
+        if (categoryService.getCategoryById(product.getCategory().getId())!=null){
+            return ResponseEntity.ok(productService.addProduct(product));
+        }else {
+            return ResponseEntity.badRequest().build();
+        }
     }
-    @GetMapping
-    public ResponseEntity<List<Product>> getProducts(){
-        return ResponseEntity.ok(productService.getProducts());
-    }
+//    @GetMapping
+//    public ResponseEntity<List<Product>> getProducts(){
+//        return ResponseEntity.ok(productService.getProducts());
+//    }
 }
 
