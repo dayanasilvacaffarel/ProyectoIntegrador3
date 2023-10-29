@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/products")
@@ -34,6 +35,16 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<ProductDTO>> getProducts(){
         return ResponseEntity.ok(productService.getProducts());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id){
+        Optional<ProductDTO> productFound = productService.getProductById(id);
+        if (productFound.isPresent()){
+            return ResponseEntity.ok(productFound.get());
+        }else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
 
