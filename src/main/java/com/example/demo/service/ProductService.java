@@ -3,7 +3,9 @@ package com.example.demo.service;
 import com.example.demo.dto.ProductDTO;
 import com.example.demo.entity.Category;
 import com.example.demo.entity.Product;
+import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.ProductRepository;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ import java.util.Optional;
 public class ProductService {
     @Autowired
     private ProductRepository productRepository;
+    private CategoryRepository categoryRepository;
 
 
     private ProductDTO productToproductDTO(Product product){
@@ -55,8 +58,8 @@ public class ProductService {
     }
 
     public List<ProductDTO> getProducts(){
-        List<Product> productFound = productRepository.findAll();
-        List<ProductDTO> productDTOList = new ArrayList<>();
+        List<Product> productFound = productRepository.findAll();//Va al repository a buscar los productos
+        List<ProductDTO> productDTOList = new ArrayList<>();//Array vacio que se va a usar para almacenar los productos listados
         for (Product product: productFound){
             productDTOList.add(productToproductDTO(product));
         }
@@ -71,12 +74,35 @@ public class ProductService {
             return Optional.empty();
         }
     }
-//     public void deleteProduct(Long id){
-//        productRepository.deleteById(id);
-//     }
-//
-//     public void updateProduct(Product product){
-//        productRepository.save(product);
-//     }
+
+     public void deleteProduct(Long id){
+        productRepository.deleteById(id);
+     }
+    public ProductDTO updateProduct(Long productId, Product updatedProductDTO) {
+        // Busca el producto existente en la base de datos por su ID
+        Optional<Product> productOptional = productRepository.findById(productId);
+
+        if (productOptional.isPresent()) {
+            Product existingProduct = productOptional.get();
+
+            // Actualiza las propiedades del producto con los valores del DTO
+            existingProduct.setName(updatedProductDTO.getName());
+            existingProduct.setDescription(updatedProductDTO.getDescription());
+            existingProduct.setActive(updatedProductDTO.getActive());
+            existingProduct.setPrice(updatedProductDTO.getPrice());
+            existingProduct.setBrand(updatedProductDTO.getBrand());
+            existingProduct.setModel(updatedProductDTO.getModel());
+
+            // Guarda el producto actualizado en la base de datos
+            Product updatedProduct = productRepository.save(existingProduct);
+
+            // Convierte el producto actualizado en un DTO y devuélvelo
+            return productToproductDTO(updatedProduct);
+        } else {
+            // Maneja el caso en el que el producto no se encuentra en la base de datos
+            throw new ResourceNotFoundException("Product not found with ID: " + productId);
+        }
+    }
+
 
 }

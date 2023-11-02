@@ -6,6 +6,7 @@ import com.example.demo.entity.Product;
 import com.example.demo.repository.CategoryRepository;
 import com.example.demo.service.CategoryService;
 import com.example.demo.service.ProductService;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,5 +47,27 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteProduct(@PathVariable Long id) throws ResourceNotFoundException {
+        Optional<ProductDTO> productFound = productService.getProductById(id);
+        if (productFound.isPresent()){
+            productService.deleteProduct(id);
+            return ResponseEntity.ok("The Product was removed ID: " +id);
+        }else {
+            throw new ResourceNotFoundException("Delete error");
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
+        try {
+            ProductDTO updatedProductDTO = productService.updateProduct(id, updatedProduct);
+            return ResponseEntity.ok(updatedProductDTO);
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
 
