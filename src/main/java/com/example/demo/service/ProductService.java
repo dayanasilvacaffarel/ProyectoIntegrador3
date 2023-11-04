@@ -2,8 +2,10 @@ package com.example.demo.service;
 
 import com.example.demo.dto.ProductDTO;
 import com.example.demo.entity.Category;
+import com.example.demo.entity.Image;
 import com.example.demo.entity.Product;
 import com.example.demo.repository.CategoryRepository;
+import com.example.demo.repository.ImageRepository;
 import com.example.demo.repository.ProductRepository;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
     private CategoryRepository categoryRepository;
+    private ImageRepository imageRepository;
 
 
     private ProductDTO productToproductDTO(Product product){
@@ -44,17 +47,15 @@ public class ProductService {
         product.setPrice(productDTO.getPrice());
         product.setBrand(productDTO.getBrand());
         product.setModel(productDTO.getModel());
-        product.setImages(productDTO.getImages());
-
         return product;
 
     }
 
 
-    public ProductDTO addProduct(Product product){
+    public ProductDTO addProduct(Product product) {
+        Product producSaved = productRepository.save(product);
+        return productToproductDTO(producSaved);
 
-        Product productSaved = productRepository.save((product));
-        return productToproductDTO(productSaved);
     }
 
     public List<ProductDTO> getProducts(){
