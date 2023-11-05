@@ -2,9 +2,11 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.ProductDTO;
 import com.example.demo.entity.Category;
+import com.example.demo.entity.Image;
 import com.example.demo.entity.Product;
 import com.example.demo.repository.CategoryRepository;
 import com.example.demo.service.CategoryService;
+import com.example.demo.service.ImageService;
 import com.example.demo.service.ProductService;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +21,10 @@ import java.util.Optional;
 public class ProductController {
     @Autowired
     private ProductService productService;
-
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private ImageService imageService;
 
     @PostMapping
     public ResponseEntity<ProductDTO> addProduct(@RequestBody Product product){
@@ -32,6 +35,16 @@ public class ProductController {
         }
     }
 
+    @PostMapping("/{productId}/addImage")
+    public ResponseEntity<String> addImageToProduct(@PathVariable Long productId, @RequestBody Image image){
+        Optional<ProductDTO> productDTO = productService.getProductById(productId);
+        if (productDTO.isPresent()){
+            productService.associateImageWithProduct(productDTO.get(), image);
+            return ResponseEntity.ok("Image successfully associated with the product");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     @GetMapping
     public ResponseEntity<List<ProductDTO>> getProducts(){

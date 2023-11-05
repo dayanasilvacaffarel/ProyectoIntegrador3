@@ -21,6 +21,7 @@ public class ProductService {
     private ProductRepository productRepository;
     private CategoryRepository categoryRepository;
     private ImageRepository imageRepository;
+    private ImageService imageService;
 
 
     private ProductDTO productToproductDTO(Product product){
@@ -105,5 +106,11 @@ public class ProductService {
         }
     }
 
+    public void associateImageWithProduct(ProductDTO productDTO, Image image){
+        Product product = productDtoToProduct(productDTO);
+        image.setProduct(product);
+        imageService.addImage(image);
+        productDTO.getImages().add(image);
+    }
 
 }
